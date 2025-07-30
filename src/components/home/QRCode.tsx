@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import QRCode from 'qrcode';
 import { Button } from '../ui/button';
 
@@ -15,7 +15,7 @@ interface QRCodeProps {
 
 export default function QRCodeComponent({
   value,
-  size = 300,
+  size = 256,
   bgColor = '#ffffff',
   fgColor = '#000000',
   watermarkImage,
@@ -23,6 +23,9 @@ export default function QRCodeComponent({
 }: QRCodeProps) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const watermarkRef = useRef<HTMLImageElement>(null);
+  const containerRef = useRef<HTMLDivElement>(null);
+  const [showDownload, setShowDownload] = useState(false);
+  const [canHover, setCanHover] = useState(false);
 
   useEffect(() => {
     const generateQR = async () => {
@@ -93,6 +96,36 @@ export default function QRCodeComponent({
     generateQR();
   }, [value, size, bgColor, fgColor, watermarkImage, errorCorrectionLevel]);
 
+  // Detect if the device supports hover
+  useEffect(() => {
+    const mediaQuery = window.matchMedia('(hover: hover)');
+    setCanHover(mediaQuery.matches);
+    
+    const handleChange = (e: MediaQueryListEvent) => {
+      setCanHover(e.matches);
+    };
+    
+    mediaQuery.addEventListener('change', handleChange);
+    return () => mediaQuery.removeEventListener('change', handleChange);
+  }, []);
+
+  // Handle clicks outside the component to hide download button
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (containerRef.current && !containerRef.current.contains(event.target as Node)) {
+        setShowDownload(false);
+      }
+    };
+
+    if (showDownload && !canHover) {
+      document.addEventListener('mousedown', handleClickOutside);
+    }
+
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, [showDownload, canHover]);
+
   const handleDownload = () => {
     if (canvasRef.current) {
       const canvas = canvasRef.current;
@@ -138,10 +171,21 @@ export default function QRCodeComponent({
     }
   };
 
+  const handleClick = () => {
+    // Only allow click toggle on devices that don't support hover
+    if (!canHover) {
+      setShowDownload(!showDownload);
+    }
+  };
+
   return (
     <div 
-      className="group relative inline-block border border-gray-300 rounded-lg hover:shadow-lg transition-shadow duration-300"
+      ref={containerRef}
+      className={`group relative inline-block border border-gray-300 rounded-lg hover:shadow-lg transition-shadow duration-300 ${
+        !canHover ? 'cursor-pointer' : ''
+      }`}
       style={{ width: size, height: size }}
+      onClick={handleClick}
     >
       <canvas
         ref={canvasRef}
@@ -157,10 +201,15 @@ export default function QRCodeComponent({
         />
       )}
 
-      {/* Download button that appears on hover */}
-      <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300 bg-black/80 rounded-lg">
+      {/* Download button that appears on hover (desktop) or click (mobile) */}
+      <div className={`absolute inset-0 flex items-center justify-center transition-opacity duration-300 bg-black/80 rounded-lg ${
+        showDownload ? 'opacity-100' : 'opacity-0 group-hover:opacity-100'
+      }`}>
         <Button
-          onClick={handleDownload}
+          onClick={(e) => {
+            e.stopPropagation();
+            handleDownload();
+          }}
           className="bg-white text-black hover:bg-gray-100 shadow-lg"
           size="sm"
         >

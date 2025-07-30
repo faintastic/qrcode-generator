@@ -4,6 +4,9 @@ import { useState, useRef, ChangeEvent } from "react";
 import QRCode from "./QRCode";
 import { Input } from "../ui/input";
 import { Label } from "../ui/label";
+import { BadgeCheckIcon, Rss } from "lucide-react";
+import { Badge } from "../ui/badge";
+import Link from "next/link";
 
 export default function HomePage() {
   const [value, setValue] = useState<string>("");
@@ -30,20 +33,43 @@ export default function HomePage() {
   }
 
   return (
-    <div className="flex flex-col items-center justify-center bg-primary rounded-lg p-8 shadow-lg w-200 text-center border">
-      <h1 className="text-4xl font-bold">QR Code Generator</h1>
+    <div className="flex flex-col items-center justify-center bg-primary rounded-lg p-4 sm:p-6 md:p-8 shadow-lg w-full max-w-sm sm:max-w-md md:max-w-lg mx-auto text-center border">
+      <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-2">QR Code Generator</h1>
+      <div className="flex flex-row gap-2">
+        <Badge
+          variant="nothing"
+          className="bg-blue-500 text-white"
+          asChild
+        >
+          <Link href="https://github.com/faintastic/qrcode-generator" target="_blank">
+            <BadgeCheckIcon />
+            Open Source
+          </Link>
+        </Badge>
+        <Badge
+          variant="nothing"
+          className="bg-[#373737] text-white"
+          asChild
+        >
+          <Link href="https://nextjs.org" target="_blank">
+            <Rss />
+            Next.js
+          </Link>
+        </Badge>
+      </div>
       {value.trim() && (
-        <div className="mt-6" ref={qrCodeRef}>
+        <div className="mt-4 sm:mt-6 w-full flex justify-center" ref={qrCodeRef}>
           <QRCode
             value={value}
             bgColor={bg}
             fgColor={fg}
             watermarkImage={watermark}
+            size={256}
           />
         </div>
       )}
 
-      <div className="grid w-full max-w-sm items-center gap-3 mt-6">
+      <div className="grid w-full items-center gap-3 mt-4 sm:mt-6 px-2">
         <Label htmlFor="text-or-url">Text or URL</Label>
         <Input
           type="text"

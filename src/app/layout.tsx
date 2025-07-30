@@ -11,6 +11,7 @@ const poppins = Poppins({
 export const metadata = {
   title: 'QR Code Generator',
   description: 'Create and customize QR codes easily',
+  viewport: 'width=device-width, initial-scale=1',
 };
 
 export default function RootLayout({
