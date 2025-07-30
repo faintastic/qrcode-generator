@@ -28,7 +28,7 @@ Enter any text or URL to generate a QR code. Customize colors and add watermarks
 
 1. Clone the repository:
 ```bash
-git clone <repository-url>
+git clone https://github.com/faintastic/qrcode-generator.git
 cd qrcode-generator
 ```
 
@@ -79,27 +79,12 @@ src/
     └── utils.ts          # Utility functions
 ```
 
-## 🎨 Customization
-
-The QR code component accepts several props for customization:
-
-```tsx
-interface QRCodeProps {
-  value: string;                              // Text/URL to encode
-  size?: number;                              // Size in pixels (default: 300)
-  bgColor?: string;                           // Background color (default: #ffffff)
-  fgColor?: string;                           // Foreground color (default: #000000)
-  watermarkImage?: string;                    // Watermark image URL
-  errorCorrectionLevel?: 'L' | 'M' | 'Q' | 'H'; // Error correction level
-}
-```
-
 ## 🔧 Available Scripts
 
-- `npm run dev` - Start development server
-- `npm run build` - Build for production
-- `npm run start` - Start production server
-- `npm run lint` - Run ESLint
+- `bun run dev` - Start development server
+- `bun run build` - Build for production
+- `bun run start` - Start production server
+- `bun run lint` - Run ESLint
 
 ## 📚 Learning Objectives
 
