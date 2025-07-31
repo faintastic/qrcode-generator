@@ -1,6 +1,6 @@
 # QR Code Generator
 
-A modern, customizable QR code generator built with Next.js 15 and the App Router. This project was created as a learning exercise to explore Next.js App Router features while building a practical utility application.
+A modern, customizable QR code generator built with Next.js 15 and the App Router. This project was created as a learning exercise to explore Next.js App Router features while building a practical utility application, aswell as shadcn.
 
 ## ✨ Features
 
@@ -10,6 +10,7 @@ A modern, customizable QR code generator built with Next.js 15 and the App Route
 - **Download Functionality**: Download generated QR codes as PNG images with hover-to-reveal download button
 - **Responsive Design**: Modern UI built with Tailwind CSS and shadcn/ui components
 - **TypeScript**: Fully typed for better development experience
+- **Database**: Database via index db (local database, instead of local storage)
 
 ## 🚀 Demo
 
@@ -116,3 +117,7 @@ This project is open source and available under the [MIT License](LICENSE).
 - [shadcn/ui](https://ui.shadcn.com/) - Beautiful UI components
 - [Next.js](https://nextjs.org/) - The React framework for production
 - [Tailwind CSS](https://tailwindcss.com/) - Utility-first CSS framework
+
+## 📃 To Do
+- Fix shadcn styling (im aware how shit it is)
+- Create a light and dark mode
