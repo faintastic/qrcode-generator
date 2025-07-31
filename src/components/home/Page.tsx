@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, Suspense } from "react";
 import { useSearchParams } from "next/navigation";
 import Generator from "./tabs/Generator";
 import Saved from "./tabs/Saved";
@@ -8,7 +8,7 @@ import Settings from "./tabs/Settings";
 
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
-export default function HomePage() {
+function HomePageContent() {
   const searchParams = useSearchParams();
   const [activeTab, setActiveTab] = useState("generator");
 
@@ -39,5 +39,13 @@ export default function HomePage() {
         <TabsTrigger value="settings">Settings</TabsTrigger>
       </TabsList>
     </Tabs>
+  );
+}
+
+export default function HomePage() {
+  return (
+    <Suspense fallback={<div>Loading...</div>}>
+      <HomePageContent />
+    </Suspense>
   );
 }
