@@ -1,14 +1,14 @@
 "use client";
 
-import { openDB } from "idb";
+import { openDB, IDBPDatabase } from "idb";
 
 const name: string = "qrcode-generator";
 const storeName: string = "data";
 
-let dbPromise: any;
+let dbPromise: Promise<IDBPDatabase> | null = null;
 
 class Database {
-  async init() {
+  async init(): Promise<IDBPDatabase> {
     if (!dbPromise) {
       dbPromise = openDB(name, 1, {
         upgrade(db) {
@@ -22,22 +22,22 @@ class Database {
     return dbPromise;
   }
 
-  async get(key:string) {
+  async get(key: string): Promise<unknown> {
     const db = await this.init();
     return db.get(storeName, key);
   }
 
-  async set(key: string, value: any) {
+  async set(key: string, value: unknown): Promise<IDBValidKey> {
     const db = await this.init();
     return db.put(storeName, value, key);
   }
 
-  async delete(key: string) {
+  async delete(key: string): Promise<void> {
     const db = await this.init();
     return db.delete(storeName, key);
   }
   
-  async getAll() {
+  async getAll(): Promise<unknown[]> {
     const db = await this.init();
     return db.getAll(storeName);
   }

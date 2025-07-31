@@ -34,8 +34,8 @@ export default function Saved() {
   useEffect(() => {
     const loadSavedQRs = async () => {
       try {
-        const saved = await database.get("savedQrs") || [];
-        setSavedQRs(saved);
+        const saved = await database.get("savedQrs");
+        setSavedQRs(Array.isArray(saved) ? saved as SavedQR[] : []);
       } catch (error) {
         console.error("Failed to load saved QR codes:", error);
       }
@@ -52,15 +52,6 @@ export default function Saved() {
       await database.set("savedQrs", updatedQRs);
     } catch (error) {
       console.error("Failed to delete QR code:", error);
-    }
-  };
-
-  const handleClearAll = async () => {
-    try {
-      setSavedQRs([]);
-      await database.set("savedQrs", []);
-    } catch (error) {
-      console.error("Failed to clear all QR codes:", error);
     }
   };
 

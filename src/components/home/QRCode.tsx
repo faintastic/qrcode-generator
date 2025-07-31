@@ -11,6 +11,14 @@ import {
 } from "@/components/ui/tooltip";
 import database from "@/lib/database";
 
+interface SavedQR {
+  value: string;
+  bg: string;
+  fg: string;
+  watermark: string;
+  timestamp: number;
+}
+
 interface QRCodeProps {
   value: string;
   size?: number;
@@ -134,9 +142,9 @@ export default function QRCodeComponent({
     try {
       setSaveState('saving');
       
-      const existingSavedQrs = await database.get("savedQrs") || [];
+      const existingSavedQrs = (await database.get("savedQrs") as SavedQR[]) || [];
       
-      const newQR = {
+      const newQR: SavedQR = {
         value,
         bg: bgColor,
         fg: fgColor,
@@ -144,7 +152,7 @@ export default function QRCodeComponent({
         timestamp: Date.now()
       };
       
-      const exists = existingSavedQrs.some((qr: any) => 
+      const exists = existingSavedQrs.some((qr: SavedQR) => 
         qr.value === newQR.value && 
         qr.bg === newQR.bg && 
         qr.fg === newQR.fg && 
