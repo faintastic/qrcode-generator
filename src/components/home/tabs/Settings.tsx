@@ -38,7 +38,7 @@ export default function Settings() {
   useEffect(() => {
     const loadConfig = async () => {
       try {
-        const savedConfig = await database.get("config");
+        const savedConfig = await database.get("config") as Config | null;
         if (savedConfig) {
           setBg(savedConfig.bg || "#ffffff");
           setFg(savedConfig.fg || "#000000");
